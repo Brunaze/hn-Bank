@@ -33,9 +33,33 @@ public abstract class Account {
 	public double getBalance() {
 		return balance;
 	}
+	
+	// 1.3.3 Creation of the Transfert, Credit, Debit classes
 
-	public void setBalance(double amount) {
-		balance = this.balance + amount;
+	public void setBalance(Flow flow) {
+		// Si c'est un debit
+		if (flow instanceof Debit) {
+			this.balance -= flow.getAmount();
+		} 
+		
+		// Si c'est un credit
+		else if (flow instanceof Credit) {
+			this.balance += flow.getAmount();
+		} 
+		
+		// Si c'est un transfert
+		else if (flow instanceof Transfert) {
+			Transfert transfert = (Transfert) flow;
+			// Si ce compte recoit
+			if (this.accountNumber == transfert.getTargetAccountNumber()) {
+				this.balance += transfert.getAmount();
+			}
+			// Si ce compte envoie
+			else if (this.accountNumber == transfert.getTransferAccountNumber()){
+				this.balance -= transfert.getAmount();
+			}
+			
+		}
 	}
 
 	public int getAccountNumber() {
