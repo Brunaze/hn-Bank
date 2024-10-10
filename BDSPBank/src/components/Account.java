@@ -11,6 +11,8 @@ public abstract class Account {
 	private static int nextAccountNumber = 1;
 	
 	protected Client client;
+	
+	
 
 	public Account(String label, Client client) {
 		this.label = label;
@@ -18,6 +20,8 @@ public abstract class Account {
 		this.accountNumber = nextAccountNumber++;
 	}
 
+	
+	
 	public String getLabel() {
 		return label;
 	}
