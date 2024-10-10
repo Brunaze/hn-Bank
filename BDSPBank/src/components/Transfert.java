@@ -6,7 +6,7 @@ public class Transfert extends Flow {
 
 	private int transferAccountNumber;
 
-	public Transfert(String comment, double amount, int targetAccountNumber, boolean effect, int transferAccountNumber) {
+	public Transfert(String comment, double amount, int targetAccountNumber, int transferAccountNumber, boolean effect) {
 		super(comment, amount, targetAccountNumber, effect);
 		this.transferAccountNumber = transferAccountNumber;
 	}

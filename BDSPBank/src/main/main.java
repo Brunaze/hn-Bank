@@ -3,11 +3,16 @@ package main;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Optional;
 
 import components.Account;
 import components.Client;
+import components.Credit;
 import components.CurrentAccount;
+import components.Debit;
+import components.Flow;
 import components.SavingsAccount;
+import components.Transfert;
 
 public class main {
 	
@@ -69,10 +74,66 @@ public class main {
 	
 	
 	public static void displayAccountSorted(Hashtable<Integer, Account> accountHashtable) {
-		accountHashtable.values()
-				.stream()
+		accountHashtable.values().stream()
 				.sorted((a1, a2) -> Double.compare(a1.getBalance(), a2.getBalance()))
 		        .forEach(System.out::println);
+	}
+	
+	
+	
+	// 1.3.4 Creation of the flow array
+	
+	public static List<Flow> generateFlows(List<Account> accounts){
+		
+		List<Flow> flows = new ArrayList<>();
+		
+		// Flow 1
+		flows.add(new Debit("Débit de 50e", 50, 1, true));
+		
+		// Flow 2
+		for (Account account : accounts) {
+			if (account instanceof CurrentAccount) {
+				flows.add(new Credit("Credit de 100.50e", 100.50, account.getAccountNumber(), true));
+			}
+		}
+		
+		// Flow 3
+		for (Account account : accounts) {
+			if (account instanceof SavingsAccount) {
+				flows.add(new Credit("Credit de 1500e", 1500, account.getAccountNumber(), true));
+			}
+		}
+		
+		// Flow 4
+		flows.add(new Transfert("Transfert de compte 1 à compte 2 de 50e", 50, 2, 1, true));
+		
+		return flows;
+	}
+	
+	
+	// 1.3.5 Updating accounts
+	
+	public static void applyFlows(List<Flow> flows, Hashtable<Integer, Account> accountHashtable) {
+		
+		// Appliquer les flows
+		for (Flow flow : flows) {
+			Account account = accountHashtable.get(flow.getTargetAccountNumber());
+			account.setBalance(flow);
+		}
+		
+		// Verifier les comptes négatifs
+		Optional<Account> negativeBalanceAccount = accountHashtable.values().stream()
+		        .filter(account -> account.getBalance() < 0)
+		        .findFirst();
+		
+		if (negativeBalanceAccount.isPresent()) {
+			System.out.println("Il y a au moins un compte avec un solde négatif");
+		}
+
+		// Afficher tous les comptes triés
+		accountHashtable.values().stream()
+		    .sorted((acc1, acc2) -> Double.compare(acc1.getBalance(), acc2.getBalance()))
+		    .forEach(System.out::println);
 	}
 	
 	
@@ -92,6 +153,12 @@ public class main {
 		Hashtable<Integer, Account> accountHashtable = convertHashtable(accounts);
 		
 		displayAccountSorted(accountHashtable);
+		
+		System.out.println("Post flows :");
+		
+		List<Flow> flows = generateFlows(accounts);
+		
+		applyFlows(flows, accountHashtable);
 	}
 
 }
