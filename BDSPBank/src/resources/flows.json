@@ -1,0 +1,14 @@
+[
+  {
+    "comment": "Debit de 100€",
+    "amount": 100.0,
+    "targetAccountNumber": 1,
+    "effect": true
+  },
+  {
+    "comment": "Debit de 50€",
+    "amount": 50.0,
+    "targetAccountNumber": 1,
+    "effect": true,
+  },
+]

@@ -1,9 +1,16 @@
 package main;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Optional;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import components.Account;
 import components.Client;
@@ -137,9 +144,22 @@ public class main {
 	}
 	
 	
+	public static List<Flow> loadFlowsFromJson() throws IOException {
+        
+		ObjectMapper objectMapper = new ObjectMapper();  
+		Path jsonFilePath = Paths.get("src/resources/flows.json");
+
+		try (BufferedReader reader = Files.newBufferedReader(jsonFilePath)) {
+	        return objectMapper.readValue(reader,
+	            objectMapper.getTypeFactory().constructCollectionType(List.class, Flow.class));
+	    }
+
+    }
+	
+	
 	// Main
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		List<Client> clients = generateClients(3);
 
 		displayClients(clients);
@@ -156,7 +176,7 @@ public class main {
 		
 		System.out.println("Post flows :");
 		
-		List<Flow> flows = generateFlows(accounts);
+		List<Flow> flows = loadFlowsFromJson();
 		
 		applyFlows(flows, accountHashtable);
 	}
