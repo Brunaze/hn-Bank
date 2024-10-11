@@ -1,6 +1,7 @@
 package main;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,7 +11,10 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Optional;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import components.Account;
 import components.Client;
@@ -144,16 +148,50 @@ public class main {
 	}
 	
 	
-	public static List<Flow> loadFlowsFromJson() throws IOException {
-        
-		ObjectMapper objectMapper = new ObjectMapper();  
-		Path jsonFilePath = Paths.get("src/resources/flows.json");
+	public static List<Flow> loadFlowsFromJson() {
+        List<Flow> flows = new ArrayList<>();
+        Path jsonFilePath = Paths.get("src/resources/flows.json");
 
-		try (BufferedReader reader = Files.newBufferedReader(jsonFilePath)) {
-	        return objectMapper.readValue(reader,
-	            objectMapper.getTypeFactory().constructCollectionType(List.class, Flow.class));
-	    }
+        JSONParser jsonParser = new JSONParser();
+        try (FileReader reader = new FileReader(jsonFilePath.toString())) {
+            // Parse le fichier JSON
+            Object obj = jsonParser.parse(reader);
 
+            // Convertir en JSONArray
+            JSONArray flowList = (JSONArray) obj;
+
+            // Parcourir la liste de flux
+            for (Object flowObj : flowList) {
+                JSONObject flowJson = (JSONObject) flowObj;
+
+                // Lire les propriétés communes
+                String type = (String) flowJson.get("type");
+                String comment = (String) flowJson.get("comment");
+                double amount = (double) flowJson.get("amount");
+                int targetAccountNumber = (int) flowJson.get("targetAccountNumber");
+                int transferAccountNumber = (int) flowJson.get("transferAccountNumber");
+                boolean effect = (boolean) flowJson.get("effect");
+
+                // Vérifier le type de flux et créer les objets correspondants
+                switch (type) {
+                    case "Credit":
+                        flows.add(new Credit(comment, amount, targetAccountNumber, effect));
+                        break;
+                    case "Debit":
+                        flows.add(new Debit(comment, amount, targetAccountNumber, effect));
+                        break;
+                    case "Transfer":
+                        long issuingAccountNumber = (long) flowJson.get("issuingAccountNumber");
+                        flows.add(new Transfert(comment, amount, targetAccountNumber, transferAccountNumber, effect));
+                        break;
+                }
+            }
+
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+
+        return flows;
     }
 	
 	

@@ -1,0 +1,20 @@
+<accounts>
+    <account>
+        <accountNumber>1</accountNumber>
+        <label>Current Account</label>
+        <balance>500.0</balance>
+        <client>
+            <name>name1</name>
+            <firstName>firstname1</firstName>
+        </client>
+    </account>
+    <account>
+        <accountNumber>2</accountNumber>
+        <label>Savings Account</label>
+        <balance>1500.0</balance>
+        <client>
+            <name>name1</name>
+            <firstName>firstname1</firstName>
+        </client>
+    </account>
+</accounts>

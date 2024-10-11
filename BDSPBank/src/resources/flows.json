@@ -1,11 +1,13 @@
 [
   {
-    "comment": "Debit de 100€",
+	"type": "Credit",
+    "comment": "Credit de 100€",
     "amount": 100.0,
     "targetAccountNumber": 1,
     "effect": true
   },
   {
+	"type": "Debit",
     "comment": "Debit de 50€",
     "amount": 50.0,
     "targetAccountNumber": 1,
