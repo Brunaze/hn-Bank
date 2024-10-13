@@ -3,6 +3,10 @@
 package components;
 
 public class Credit extends Flow {
+	
+	public Credit() {
+        super();
+    }
 
 	public Credit(String comment, double amount, int targetAccountNumber, boolean effect) {
 		super(comment, amount, targetAccountNumber, effect);

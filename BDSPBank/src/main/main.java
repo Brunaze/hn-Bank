@@ -174,9 +174,15 @@ public class main {
 		
 		displayAccountSorted(accountHashtable);
 		
-		System.out.println("Post flows :");
+		System.out.println("Generate flows :");
 		
-		List<Flow> flows = loadFlowsFromJson();
+		List<Flow> flows = generateFlows(accounts);
+		
+		applyFlows(flows, accountHashtable);
+		
+		System.out.println("Flows from JSON :");
+		
+		flows = loadFlowsFromJson();
 		
 		applyFlows(flows, accountHashtable);
 	}

@@ -4,6 +4,19 @@ package components;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+@JsonTypeInfo(
+	    use = JsonTypeInfo.Id.NAME, // Utilise un champ de type "name" pour distinguer les sous-types
+	    include = JsonTypeInfo.As.PROPERTY, // Le champ "type" sera une propriété dans le JSON
+	    property = "type" // Le nom du champ dans le JSON qui contiendra le type (ex: "Debit", "Credit", "Transfer")
+)
+@JsonSubTypes({
+	    @JsonSubTypes.Type(value = Debit.class, name = "Debit"),
+	    @JsonSubTypes.Type(value = Credit.class, name = "Credit"),
+	    @JsonSubTypes.Type(value = Transfert.class, name = "Transfert")
+})
 public abstract class Flow {
 
 	private String comment;
@@ -17,6 +30,10 @@ public abstract class Flow {
 	
 	
 	
+	public Flow() {
+	}
+
+	
 	public Flow(String comment, double amount, int targetAccountNumber, boolean effect) {
 		super();
 		this.comment = comment;
@@ -26,7 +43,7 @@ public abstract class Flow {
 		this.identifier = nextIdentifier++;
 		this.dateOfFlow = LocalDate.now().plusDays(2);
 	}
-
+	
 
 
 	public String getComment() {
