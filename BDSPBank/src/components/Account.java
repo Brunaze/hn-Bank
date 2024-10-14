@@ -2,16 +2,31 @@
 
 package components;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlType;
+
+
+@XmlSeeAlso({CurrentAccount.class, SavingsAccount.class})
 public abstract class Account {
 	
+	
 	protected String label;
+	
+	
 	protected double balance;
+	
+	
 	protected int accountNumber;
 	
 	private static int nextAccountNumber = 1;
 	
 	protected Client client;
 	
+	
+	public Account() {
+    }
 	
 
 	public Account(String label, Client client) {
@@ -21,7 +36,7 @@ public abstract class Account {
 	}
 
 	
-	
+	@XmlElement(name = "label")
 	public String getLabel() {
 		return label;
 	}
@@ -30,6 +45,7 @@ public abstract class Account {
 		this.label = label;
 	}
 
+	@XmlElement(name = "balance")
 	public double getBalance() {
 		return balance;
 	}
@@ -62,6 +78,7 @@ public abstract class Account {
 		}
 	}
 
+	@XmlElement(name = "accountNumber")
 	public int getAccountNumber() {
 		return accountNumber;
 	}
@@ -70,6 +87,7 @@ public abstract class Account {
 		this.accountNumber = accountNumber;
 	}
 
+	@XmlElement(name = "client")
 	public Client getClient() {
 		return client;
 	}

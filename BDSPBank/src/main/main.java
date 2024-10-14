@@ -10,9 +10,15 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Optional;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+
+import java.io.File;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import components.Account;
+import components.AccountsWrapper;
 import components.Client;
 import components.Credit;
 import components.CurrentAccount;
@@ -157,14 +163,27 @@ public class main {
     }
 	
 	
+	// Je n'ai pas réussi a faire fonctionner l'import XML
+	public static List<Account> loadAccountsFromXml() throws Exception {
+        Path xmlFilePath = Paths.get("src/resources/accounts.xml");
+        JAXBContext context = JAXBContext.newInstance(AccountsWrapper.class);
+
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        AccountsWrapper accountsWrapper = (AccountsWrapper) unmarshaller.unmarshal(new File(xmlFilePath.toString()));
+        return accountsWrapper.getAccounts();
+    }
+	
+	
 	// Main
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		List<Client> clients = generateClients(3);
 
 		displayClients(clients);
 		
 		List<Account> accounts = generateAccounts(clients);
+		
+		// List<Account> accounts = loadAccountsFromXml();
 		
 		displayAccounts(accounts);
 		

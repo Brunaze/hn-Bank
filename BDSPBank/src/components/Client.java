@@ -2,14 +2,24 @@
 
 package components;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlRootElement(name = "client")
+@XmlType(propOrder = {"name", "firstName"})
 public class Client {
 	
 	private String name;
+	
 	private String firstName;
 	private int clientNumber;
 	
 	private static int nextClientNumber = 1;
 	
+	
+	public Client() {
+    }
 	
 	public Client(String name, String firstName) {
 		this.name = name;
@@ -18,6 +28,7 @@ public class Client {
 	}
 
 
+	@XmlElement(name = "name")
 	public String getName() {
 		return name;
 	}
@@ -28,6 +39,7 @@ public class Client {
 	}
 
 
+	@XmlElement(name = "firstName")
 	public String getFirstName() {
 		return firstName;
 	}

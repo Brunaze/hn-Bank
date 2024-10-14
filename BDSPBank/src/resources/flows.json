@@ -12,5 +12,13 @@
     "amount": 50.0,
     "targetAccountNumber": 1,
     "effect": true
+  },
+  {
+  	"type": "Transfert",
+    "comment": "Transfert de 20€",
+    "amount": 20.0,
+    "targetAccountNumber": 1,
+	"transferAccountNumber": 3,
+    "effect": true
   }
 ]
